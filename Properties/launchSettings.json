@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "QML Studio (Package)": {
+      "commandName": "MsixPackage"
+    },
+    "QML Studio (Unpackaged)": {
+      "commandName": "Project"
+    }
+  }
+}

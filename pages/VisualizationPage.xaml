@@ -1,0 +1,155 @@
+<Page x:Class="QML_Studio.pages.VisualizationPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      Background="#F8F9FD">
+
+    <Page.Resources>
+        <SolidColorBrush x:Key="TextBrush" Color="#111729"/>
+        <SolidColorBrush x:Key="SecondaryTextBrush" Color="#71809F"/>
+        <SolidColorBrush x:Key="PurpleBrush" Color="#6547FF"/>
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#148DF5"/>
+
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#070D1D"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="18,8"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#DDE3F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="20"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid Background="#F9FAFE">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="90"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <Border Grid.Row="0" Background="#FFFFFF" BorderBrush="#E5E9F2" BorderThickness="0,0,0,1">
+            <Grid Margin="23,15,26,0">
+                <StackPanel>
+                    <TextBlock Text="Data &amp; Feature Visualization" Foreground="#313A51" FontSize="12" FontWeight="SemiBold"/>
+                    <TextBlock Text="Explore feature relationships &amp; distributions" Foreground="{StaticResource TextBrush}" FontSize="24" FontWeight="Bold" Margin="0,4,0,0"/>
+                    <TextBlock Text="Select rows/columns and plot types. Rust backend invokes Python engine to generate plot outputs." Foreground="{StaticResource SecondaryTextBrush}" FontSize="12" Margin="0,2,0,0"/>
+                </StackPanel>
+                <Border Width="27" Height="27" Background="#F1F2FF" CornerRadius="15" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <TextBlock Text="U" Foreground="#6652E8" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- PAGE CONTENT -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="35,20,45,40" Spacing="20">
+
+                <!-- PLOT CONTROL PANEL CARD -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel Spacing="15">
+                        <Grid>
+                            <TextBlock Text="Interactive Plot Settings" FontSize="15" FontWeight="Bold" Foreground="{StaticResource TextBrush}"/>
+                            <TextBlock x:Name="PlotPurposeText" Text="Purpose: Feature Correlations" Foreground="{StaticResource PurpleBrush}" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                        </Grid>
+
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="1.2*"/>
+                                <ColumnDefinition Width="140"/>
+                            </Grid.ColumnDefinitions>
+
+                            <!-- X Axis / Column 1 -->
+                            <StackPanel Grid.Column="0" Margin="0,0,12,0" Spacing="5">
+                                <TextBlock Text="X-Axis Feature / Column" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource SecondaryTextBrush}"/>
+                                <ComboBox x:Name="XColComboBox" HorizontalAlignment="Stretch" PlaceholderText="Select X Feature"/>
+                            </StackPanel>
+
+                            <!-- Y Axis / Column 2 -->
+                            <StackPanel Grid.Column="1" Margin="0,0,12,0" Spacing="5">
+                                <TextBlock Text="Y-Axis Feature / Target" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource SecondaryTextBrush}"/>
+                                <ComboBox x:Name="YColComboBox" HorizontalAlignment="Stretch" PlaceholderText="Select Y Feature"/>
+                            </StackPanel>
+
+                            <!-- Plot Type -->
+                            <StackPanel Grid.Column="2" Margin="0,0,12,0" Spacing="5">
+                                <TextBlock Text="Visualization Type (11 Available)" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource SecondaryTextBrush}"/>
+                                <ComboBox x:Name="PlotTypeComboBox" HorizontalAlignment="Stretch" SelectedIndex="0" SelectionChanged="PlotTypeComboBox_SelectionChanged">
+                                    <ComboBoxItem Content="Correlation Heatmap"/>
+                                    <ComboBoxItem Content="Histogram"/>
+                                    <ComboBoxItem Content="Bar Chart"/>
+                                    <ComboBoxItem Content="Box Plot"/>
+                                    <ComboBoxItem Content="Violin Plot"/>
+                                    <ComboBoxItem Content="Scatter Plot"/>
+                                    <ComboBoxItem Content="Scatter Matrix"/>
+                                    <ComboBoxItem Content="Missing Value Chart"/>
+                                    <ComboBoxItem Content="Feature Distribution Grid"/>
+                                    <ComboBoxItem Content="Class Distribution Chart"/>
+                                    <ComboBoxItem Content="Outlier Plot"/>
+                                </ComboBox>
+                            </StackPanel>
+
+                            <!-- Generate Plot Button -->
+                            <Button x:Name="GeneratePlotButton"
+                                    Grid.Column="3"
+                                    Content="Generate Plot"
+                                    Style="{StaticResource PrimaryButtonStyle}"
+                                    VerticalAlignment="Bottom"
+                                    Height="32"
+                                    Click="GeneratePlotButton_Click"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+
+                <!-- DISPLAY PLOT AREA -->
+                <Border Style="{StaticResource CardStyle}">
+                    <StackPanel Spacing="15">
+                        <Grid>
+                            <TextBlock Text="Generated Plot Output" FontSize="15" FontWeight="Bold" Foreground="{StaticResource TextBrush}" VerticalAlignment="Center"/>
+                            <TextBlock x:Name="PlotStatusBadge" Text="Ready to generate plot" Foreground="{StaticResource PurpleBrush}" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                        </Grid>
+
+                        <Border Height="400" Background="#F8F9FE" BorderBrush="#E5E9F2" BorderThickness="1" CornerRadius="8" Padding="10">
+                            <Grid>
+                                <!-- Placeholder message if no plot yet -->
+                                <StackPanel x:Name="PlaceholderContainer" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="10">
+                                    <TextBlock Text="◫" FontSize="36" Foreground="{StaticResource PurpleBrush}" HorizontalAlignment="Center"/>
+                                    <TextBlock Text="Select visualization type and click 'Generate Plot'" Foreground="{StaticResource SecondaryTextBrush}" FontSize="12" HorizontalAlignment="Center"/>
+                                </StackPanel>
+
+                                <!-- Loading spinner for plot generation -->
+                                <StackPanel x:Name="PlotLoadingContainer" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="10">
+                                    <ProgressRing x:Name="PlotLoadingRing" IsActive="False" Width="44" Height="44" Foreground="#6547FF"/>
+                                    <TextBlock Text="Rendering Plot via Rust &amp; Python..." Foreground="#6547FF" FontSize="12" FontWeight="Bold" HorizontalAlignment="Center"/>
+                                </StackPanel>
+
+                                <!-- Plot Image Display -->
+                                <Image x:Name="PlotImage" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Grid>
+                        </Border>
+                    </StackPanel>
+                </Border>
+
+            </StackPanel>
+        </ScrollViewer>
+    </Grid>
+</Page>

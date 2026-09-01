@@ -1,0 +1,115 @@
+<Page
+    x:Class="QML_Studio.pages.ClassicalModelPage"
+    xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+    xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+    xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    mc:Ignorable="d"
+    Background="#F8F9FD">
+
+    <ScrollViewer VerticalScrollBarVisibility="Auto">
+        <Grid Margin="40,30,40,30">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="Auto"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+
+            <!-- Header -->
+            <StackPanel Grid.Row="0" Margin="0,0,0,25">
+                <TextBlock Text="Classical Machine Learning Models" FontSize="26" FontWeight="Bold" Foreground="#111729"/>
+                <TextBlock Text="Configure and run classical counterpart models automatically using your uploaded dataset" FontSize="13" Foreground="#71809F" Margin="0,4,0,0"/>
+            </StackPanel>
+
+            <!-- Card Selection Grid -->
+            <Grid Grid.Row="1" Margin="0,0,0,25">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+
+                <Button x:Name="BtnKnn" Grid.Column="0" Content="Classical KNN" Margin="0,0,5,0" HorizontalAlignment="Stretch" Click="BtnModelSelect_Click" Tag="KNN" Background="#148DF5" Foreground="White" CornerRadius="6"/>
+                <Button x:Name="BtnSvm" Grid.Column="1" Content="Classical SVM" Margin="5,0,5,0" HorizontalAlignment="Stretch" Click="BtnModelSelect_Click" Tag="SVM" Background="#E0E6ED" Foreground="#111729" CornerRadius="6"/>
+                <Button x:Name="BtnMlp" Grid.Column="2" Content="Classical MLP (NN)" Margin="5,0,5,0" HorizontalAlignment="Stretch" Click="BtnModelSelect_Click" Tag="MLP" Background="#E0E6ED" Foreground="#111729" CornerRadius="6"/>
+                <Button x:Name="BtnLogReg" Grid.Column="3" Content="Logistic Reg" Margin="5,0,5,0" HorizontalAlignment="Stretch" Click="BtnModelSelect_Click" Tag="LOGREG" Background="#E0E6ED" Foreground="#111729" CornerRadius="6"/>
+                <Button x:Name="BtnKernel" Grid.Column="4" Content="Classical Kernel" Margin="5,0,0,0" HorizontalAlignment="Stretch" Click="BtnModelSelect_Click" Tag="KERNEL" Background="#E0E6ED" Foreground="#111729" CornerRadius="6"/>
+            </Grid>
+
+            <!-- Configuration & Run Form -->
+            <Border Grid.Row="2" Background="White" CornerRadius="12" Padding="25" BorderBrush="#DDE3F0" BorderThickness="1">
+                <StackPanel Spacing="15">
+                    <TextBlock x:Name="SelectedModelTitle" Text="Selected Model: Classical KNN (Instance-Based Direct Prediction)" FontSize="18" FontWeight="Bold" Foreground="#111729"/>
+
+                    <!-- Reference Dataset Row -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="Auto"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="SelectedFileTextBlock" Header="Reference Dataset Path (Auto-loaded from Data Upload)" PlaceholderText="Using uploaded dataset..." IsReadOnly="True" Margin="0,0,10,0"/>
+                        <Button Content="📁 Change File..." VerticalAlignment="Bottom" Click="SelectFileButton_Click" Background="#6547FF" Foreground="White" Padding="16,8" CornerRadius="6"/>
+                    </Grid>
+
+                    <!-- Target Column & Hyperparameter Row -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        
+                        <StackPanel Grid.Column="0" Margin="0,0,10,0" Spacing="3">
+                            <TextBlock Text="Target Class Label Column" Foreground="#313A51" FontSize="11" FontWeight="SemiBold"/>
+                            <ComboBox x:Name="TargetColumnComboBox" HorizontalAlignment="Stretch" Height="32" FontSize="11" SelectedIndex="0"/>
+                        </StackPanel>
+                        
+                        <TextBox x:Name="Param1TextBox" Header="Hyperparameter 1 (K / C / Epochs / MaxIter)" Text="3" Grid.Column="1" Margin="10,0,0,0"/>
+                    </Grid>
+
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+                        <TextBox x:Name="Param2TextBox" Header="Hyperparameter 2 (Gamma / Hidden Neurons)" Text="0.5"/>
+                    </Grid>
+
+                    <Border Height="1" Background="#F0F2F8" Margin="0,5"/>
+
+                    <!-- QUERY INPUT MODES SECTION (Single Query Vector vs Batch Test File) -->
+                    <StackPanel Spacing="10">
+                        <TextBlock Text="🎯 Prediction Query Input (Single Sample or Batch File)" FontSize="13" FontWeight="Bold" Foreground="#111729"/>
+
+                        <!-- Single Sample Input Box -->
+                        <TextBox x:Name="QueryVectorTextBox" Header="Single Sample Feature Values (comma separated, e.g. 0.72, 0.15, 0.91, 0.43)" PlaceholderText="Type feature values to find nearest neighbors for a new query sample..." Margin="0,0,0,4"/>
+
+                        <!-- Batch Test File Picker Box -->
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*"/>
+                                <ColumnDefinition Width="Auto"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBox x:Name="BatchQueryFileTextBox" Header="Batch Query CSV / Excel File Path (Optional)" PlaceholderText="No batch query file selected (or browse below)..." IsReadOnly="True" Margin="0,0,10,0"/>
+                            <Button Content="📂 Browse Query File..." VerticalAlignment="Bottom" Click="BrowseQueryFileButton_Click" Background="#148DF5" Foreground="White" Padding="14,8" CornerRadius="6"/>
+                        </Grid>
+                    </StackPanel>
+
+                    <!-- RUN BUTTON -->
+                    <Button x:Name="RunModelButton" Content="⚡ Predict &amp; Evaluate Nearest Neighbors" Click="RunModelButton_Click" Background="#070D1D" Foreground="White" FontSize="14" FontWeight="Bold" Padding="24,12" HorizontalAlignment="Stretch" CornerRadius="6" Margin="0,10,0,15"/>
+
+                    <!-- EXECUTION OUTPUT -->
+                    <TextBlock Text="Nearest Neighbor Lookup &amp; Execution Output:" FontSize="15" FontWeight="Bold" Foreground="#111729" Margin="0,0,0,4"/>
+                    <Border Background="#F8F9FD" CornerRadius="8" Padding="15" BorderBrush="#DDE3F0" BorderThickness="1" MinHeight="140">
+                        <StackPanel Spacing="10">
+                            <ScrollViewer MaxHeight="220" VerticalScrollBarVisibility="Auto">
+                                <TextBlock x:Name="ResultTextBlock" Text="Ready to run model." TextWrapping="Wrap" FontFamily="Consolas" FontSize="13" Foreground="#111729"/>
+                            </ScrollViewer>
+                            <Button x:Name="OpenBatchPredictionsButton" Content="📥 Open / Export Appended Batch Predictions File (.csv)" Click="OpenBatchPredictionsButton_Click" Visibility="Collapsed" Background="#10B981" Foreground="White" FontWeight="Bold" Padding="16,8" CornerRadius="6" HorizontalAlignment="Left"/>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </ScrollViewer>
+</Page>

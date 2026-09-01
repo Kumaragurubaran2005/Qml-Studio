@@ -1,0 +1,356 @@
+<Page x:Class="QML_Studio.pages.ModelSelectionPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      Background="#F8F9FD">
+
+    <Page.Resources>
+
+        <!-- =========================
+             COLORS
+             ========================= -->
+
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#148DF5"/>
+        <SolidColorBrush x:Key="PurpleBrush" Color="#6547FF"/>
+        <SolidColorBrush x:Key="TextBrush" Color="#111729"/>
+        <SolidColorBrush x:Key="SecondaryTextBrush" Color="#71809F"/>
+        <SolidColorBrush x:Key="BorderBrushLight" Color="#DDE3F0"/>
+        <SolidColorBrush x:Key="WhiteBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="SuccessBrush" Color="#0DB979"/>
+
+        <!-- PRIMARY BUTTON -->
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#070D1D"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="18,8"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- CATEGORY TAB STYLE -->
+        <Style x:Key="CategoryTabStyle" TargetType="Button">
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="Foreground" Value="#66728E"/>
+            <Setter Property="BorderBrush" Value="#DDE3F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="FontSize" Value="10"/>
+            <Setter Property="Padding" Value="13,6"/>
+            <Setter Property="Margin" Value="0,0,7,0"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}"
+                                CornerRadius="15">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- CARD STYLE -->
+        <Style x:Key="CardStyle" TargetType="Border">
+            <Setter Property="Background" Value="#FFFFFF"/>
+            <Setter Property="BorderBrush" Value="#DDE3F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="11"/>
+        </Style>
+
+    </Page.Resources>
+
+    <!-- ==========================================================
+         MAIN APPLICATION CONTENT
+         ========================================================== -->
+    <Grid x:Name="MainContent" Background="#F9FAFE">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <Border x:Name="Header" Grid.Row="0" Background="#FFFFFF" BorderBrush="#E5E9F2" BorderThickness="0,0,0,1">
+            <Grid Margin="23,20,26,0">
+                <StackPanel>
+                    <TextBlock x:Name="PageCategoryText" Text="Model Selection &amp; Hybrid Cross-Study" Foreground="#313A51" FontSize="12" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="PageTitleText" Text="Choose your learning model &amp; cross-study counterpart" Foreground="{StaticResource TextBrush}" FontSize="24" FontWeight="Bold" Margin="0,7,0,0"/>
+                    <TextBlock x:Name="PageDescriptionText" Text="Select and benchmark quantum vs classical performance metrics." Foreground="{StaticResource SecondaryTextBrush}" FontSize="12" Margin="0,2,0,0"/>
+                </StackPanel>
+
+                <Border x:Name="UserAvatar" Width="27" Height="27" Background="#F1F2FF" CornerRadius="15" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <TextBlock x:Name="UserInitial" Text="U" Foreground="#6652E8" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- PAGE CONTENT -->
+        <Grid Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="60"/>
+            </Grid.RowDefinitions>
+
+            <ScrollViewer Grid.Row="0" VerticalScrollBarVisibility="Auto">
+                <StackPanel x:Name="ModelSelectionContent" Margin="40,20,60,20">
+
+                    <!-- MODEL CATEGORY TABS -->
+                    <StackPanel x:Name="CategoryTabsPanel" Orientation="Horizontal">
+                        <Button x:Name="QuantumModelsTab"
+                                Content="Quantum Models"
+                                Style="{StaticResource CategoryTabStyle}"
+                                Background="#F4F1FF"
+                                BorderBrush="{StaticResource PurpleBrush}"
+                                Foreground="{StaticResource PurpleBrush}"
+                                Click="QuantumModelsTab_Click"/>
+
+                        <Button x:Name="HybridModelsTab"
+                                Content="⚡ Hybrid Models &amp; Cross-Study"
+                                Style="{StaticResource CategoryTabStyle}"
+                                Click="HybridModelsTab_Click"/>
+
+                        <Button x:Name="ClassicalModelsTab"
+                                Content="Classical Models"
+                                Style="{StaticResource CategoryTabStyle}"
+                                Click="ClassicalModelsTab_Click"/>
+                    </StackPanel>
+
+                    <!-- HYBRID CROSS-STUDY PERFORMANCE BENCHMARK PANEL -->
+                    <StackPanel x:Name="HybridCrossStudyPanel" Visibility="Collapsed" Margin="0,20,0,20" Spacing="20">
+                        <Border Background="White" BorderBrush="#DEE4F0" BorderThickness="1" CornerRadius="12" Padding="22">
+                            <StackPanel Spacing="16">
+                                <Grid>
+                                    <StackPanel>
+                                        <TextBlock Text="Hybrid Quantum vs Classical Performance Cross-Study" FontSize="16" FontWeight="Bold" Foreground="{StaticResource TextBrush}"/>
+                                        <TextBlock Text="Benchmark QML models against classical counterparts in accuracy, training speed &amp; parameter efficiency." Foreground="{StaticResource SecondaryTextBrush}" FontSize="11" Margin="0,2,0,0"/>
+                                    </StackPanel>
+                                    <TextBlock x:Name="HybridStatusBadge" Text="Ready to run cross-study" Foreground="{StaticResource PurpleBrush}" FontSize="11" FontWeight="SemiBold" HorizontalAlignment="Right" VerticalAlignment="Center"/>
+                                </Grid>
+
+                                <!-- CONTROLS GRID -->
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="*"/>
+                                        <ColumnDefinition Width="80"/>
+                                        <ColumnDefinition Width="90"/>
+                                        <ColumnDefinition Width="170"/>
+                                    </Grid.ColumnDefinitions>
+
+                                    <!-- QML Model -->
+                                    <StackPanel Grid.Column="0" Margin="0,0,10,0" Spacing="4">
+                                        <TextBlock Text="QML Model" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource SecondaryTextBrush}"/>
+                                        <ComboBox x:Name="HybridQmlModelComboBox" HorizontalAlignment="Stretch" SelectedIndex="0">
+                                            <ComboBoxItem Content="QSVM (Quantum SVM)"/>
+                                            <ComboBoxItem Content="QNN (Quantum Neural Net)"/>
+                                            <ComboBoxItem Content="VQC (Variational Classifier)"/>
+                                            <ComboBoxItem Content="QKNN (Quantum K-NN)"/>
+                                        </ComboBox>
+                                    </StackPanel>
+
+                                    <!-- Classical Counterpart -->
+                                    <StackPanel Grid.Column="1" Margin="0,0,10,0" Spacing="4">
+                                        <TextBlock Text="Classical Counterpart" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource SecondaryTextBrush}"/>
+                                        <ComboBox x:Name="HybridClassicalModelComboBox" HorizontalAlignment="Stretch" SelectedIndex="0">
+                                            <ComboBoxItem Content="Classical SVM (RBF Kernel)"/>
+                                            <ComboBoxItem Content="Classical Neural Net (MLP)"/>
+                                            <ComboBoxItem Content="Random Forest Classifier"/>
+                                            <ComboBoxItem Content="Classical K-NN"/>
+                                        </ComboBox>
+                                    </StackPanel>
+
+                                    <!-- Qubits -->
+                                    <StackPanel Grid.Column="2" Margin="0,0,10,0" Spacing="4">
+                                        <TextBlock Text="Qubits" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource SecondaryTextBrush}"/>
+                                        <TextBox x:Name="HybridQubitsInput" Text="4" Height="32" FontSize="11"/>
+                                    </StackPanel>
+
+                                    <!-- Shots -->
+                                    <StackPanel Grid.Column="3" Margin="0,0,10,0" Spacing="4">
+                                        <TextBlock Text="Shots" FontSize="10" FontWeight="SemiBold" Foreground="{StaticResource SecondaryTextBrush}"/>
+                                        <TextBox x:Name="HybridShotsInput" Text="1024" Height="32" FontSize="11"/>
+                                    </StackPanel>
+
+                                    <!-- Run Button -->
+                                    <Button x:Name="RunHybridBenchmarkButton"
+                                            Grid.Column="4"
+                                            Content="⚡ Run Cross-Study"
+                                            Style="{StaticResource PrimaryButtonStyle}"
+                                            VerticalAlignment="Bottom"
+                                            Height="32"
+                                            Click="RunHybridBenchmarkButton_Click"/>
+                                </Grid>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- COMPARISON RESULTS (VISIBLE AFTER RUN) -->
+                        <StackPanel x:Name="HybridResultsContainer" Visibility="Collapsed" Spacing="16">
+                            <!-- METRIC CARDS -->
+                            <Grid>
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="*"/>
+                                </Grid.ColumnDefinitions>
+
+                                <!-- Card 1: Accuracy -->
+                                <Border Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,10,0" Padding="14">
+                                    <StackPanel Spacing="3">
+                                        <TextBlock Text="ACCURACY COMPARISON" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" FontWeight="SemiBold"/>
+                                        <TextBlock x:Name="HybridAccuracyValue" Text="96.4% vs 92.1%" Foreground="{StaticResource TextBrush}" FontSize="15" FontWeight="Bold"/>
+                                        <TextBlock x:Name="HybridAccuracyDiffText" Text="+4.3% Quantum Advantage" Foreground="{StaticResource SuccessBrush}" FontSize="9" FontWeight="SemiBold"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Card 2: F1 Score -->
+                                <Border Grid.Column="1" Style="{StaticResource CardStyle}" Margin="0,0,10,0" Padding="14">
+                                    <StackPanel Spacing="3">
+                                        <TextBlock Text="F1-SCORE (QML vs CLASSICAL)" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" FontWeight="SemiBold"/>
+                                        <TextBlock x:Name="HybridF1Value" Text="96.1% vs 91.8%" Foreground="{StaticResource TextBrush}" FontSize="15" FontWeight="Bold"/>
+                                        <TextBlock Text="F1-Score Benchmark" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Card 3: Training Time -->
+                                <Border Grid.Column="2" Style="{StaticResource CardStyle}" Margin="0,0,10,0" Padding="14">
+                                    <StackPanel Spacing="3">
+                                        <TextBlock Text="TRAINING SPEED" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" FontWeight="SemiBold"/>
+                                        <TextBlock x:Name="HybridTimeValue" Text="3.2s vs 2.1s" Foreground="{StaticResource TextBrush}" FontSize="15" FontWeight="Bold"/>
+                                        <TextBlock Text="Simulator Execution Time" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9"/>
+                                    </StackPanel>
+                                </Border>
+
+                                <!-- Card 4: Parameter Efficiency -->
+                                <Border Grid.Column="3" Style="{StaticResource CardStyle}" Padding="14">
+                                    <StackPanel Spacing="3">
+                                        <TextBlock Text="PARAMETER REDUCTION" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" FontWeight="SemiBold"/>
+                                        <TextBlock x:Name="HybridParamReductionValue" Text="87.5% Fewer Params" Foreground="{StaticResource PurpleBrush}" FontSize="15" FontWeight="Bold"/>
+                                        <TextBlock Text="Hilbert Space Parameter Efficiency" Foreground="{StaticResource SuccessBrush}" FontSize="9"/>
+                                    </StackPanel>
+                                </Border>
+                            </Grid>
+
+                            <!-- CHART DISPLAY CARD -->
+                            <Border Background="White" BorderBrush="#DEE4F0" BorderThickness="1" CornerRadius="10" Padding="18">
+                                <StackPanel Spacing="10">
+                                    <TextBlock Text="Comparative Performance Graphic (QML vs Classical)" FontSize="13" FontWeight="Bold" Foreground="{StaticResource TextBrush}"/>
+                                    <Border Height="280" Background="#F8F9FE" BorderBrush="#E5E9F2" BorderThickness="1" CornerRadius="8" Padding="10">
+                                        <Grid>
+                                            <StackPanel x:Name="HybridChartLoading" Visibility="Collapsed" VerticalAlignment="Center" HorizontalAlignment="Center" Spacing="10">
+                                                <ProgressRing IsActive="True" Width="40" Height="40" Foreground="#6547FF"/>
+                                                <TextBlock Text="Running Hybrid Quantum vs Classical Cross-Study..." Foreground="#6547FF" FontSize="11" FontWeight="Bold"/>
+                                            </StackPanel>
+                                            <Image x:Name="HybridChartImage" Stretch="Uniform" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                                        </Grid>
+                                    </Border>
+                                </StackPanel>
+                            </Border>
+                        </StackPanel>
+                    </StackPanel>
+
+                    <!-- MODEL CARDS -->
+                    <Grid x:Name="ModelCardsGrid" Margin="0,15,0,0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="130"/>
+                            <RowDefinition Height="130"/>
+                        </Grid.RowDefinitions>
+
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- QSVM -->
+                        <Border x:Name="QSVMCard" Grid.Row="0" Grid.Column="0" Style="{StaticResource CardStyle}" BorderBrush="{StaticResource PurpleBrush}" BorderThickness="2" Margin="0,0,14,14" PointerPressed="QSVMCard_PointerPressed">
+                            <Grid Margin="15">
+                                <StackPanel>
+                                    <TextBlock Text="QSVM" Foreground="{StaticResource TextBrush}" FontSize="14" FontWeight="Bold"/>
+                                    <TextBlock Text="Quantum Support Vector Machine" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" Margin="0,2,0,0"/>
+                                    <TextBlock Text="Kernel-based classification using quantum feature maps." Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" Margin="0,10,0,0" TextWrapping="Wrap"/>
+                                </StackPanel>
+                                <Border Width="7" Height="7" Background="{StaticResource PurpleBrush}" CornerRadius="4" HorizontalAlignment="Right" VerticalAlignment="Top"/>
+                            </Grid>
+                        </Border>
+
+                        <!-- QNN -->
+                        <Border x:Name="QNNCard" Grid.Row="0" Grid.Column="1" Style="{StaticResource CardStyle}" Margin="0,0,14,14" PointerPressed="QNNCard_PointerPressed">
+                            <Grid Margin="15">
+                                <StackPanel>
+                                    <TextBlock Text="QNN" Foreground="{StaticResource TextBrush}" FontSize="14" FontWeight="Bold"/>
+                                    <TextBlock Text="Quantum Neural Network" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" Margin="0,2,0,0"/>
+                                    <TextBlock Text="Parameterized quantum circuits with variational optimization." Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" Margin="0,10,0,0" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- VQC -->
+                        <Border x:Name="VQCCard" Grid.Row="0" Grid.Column="2" Style="{StaticResource CardStyle}" Margin="0,0,0,14" PointerPressed="VQCCard_PointerPressed">
+                            <Grid Margin="15">
+                                <StackPanel>
+                                    <TextBlock Text="VQC" Foreground="{StaticResource TextBrush}" FontSize="14" FontWeight="Bold"/>
+                                    <TextBlock Text="Variational Quantum Classifier" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" Margin="0,2,0,0"/>
+                                    <TextBlock Text="Supervised learning with feature map and ansatz." Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" Margin="0,10,0,0" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- QCNN -->
+                        <Border x:Name="QCNNCard" Grid.Row="1" Grid.Column="0" Style="{StaticResource CardStyle}" Margin="0,0,14,0" PointerPressed="QCNNCard_PointerPressed">
+                            <Grid Margin="15">
+                                <StackPanel>
+                                    <TextBlock Text="QCNN" Foreground="{StaticResource TextBrush}" FontSize="14" FontWeight="Bold"/>
+                                    <TextBlock Text="Quantum Convolutional NN" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" Margin="0,2,0,0"/>
+                                    <TextBlock Text="Quantum convolution and pooling layers for structured data." Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" Margin="0,10,0,0" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- QKNN -->
+                        <Border x:Name="QKNNCard" Grid.Row="1" Grid.Column="1" Style="{StaticResource CardStyle}" Margin="0,0,14,0" PointerPressed="QKNNCard_PointerPressed">
+                            <Grid Margin="15">
+                                <StackPanel>
+                                    <TextBlock Text="QKNN" Foreground="{StaticResource TextBrush}" FontSize="14" FontWeight="Bold"/>
+                                    <TextBlock Text="Quantum K-Nearest Neighbors" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" Margin="0,2,0,0"/>
+                                    <TextBlock Text="Distance estimation using quantum SWAP test circuits." Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" Margin="0,10,0,0" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+
+                        <!-- Quantum Kernel -->
+                        <Border x:Name="QuantumKernelCard" Grid.Row="1" Grid.Column="2" Style="{StaticResource CardStyle}" Margin="0,0,0,0" PointerPressed="QuantumKernelCard_PointerPressed">
+                            <Grid Margin="15">
+                                <StackPanel>
+                                    <TextBlock Text="Quantum Kernel" Foreground="{StaticResource TextBrush}" FontSize="14" FontWeight="Bold"/>
+                                    <TextBlock Text="Quantum Kernel Estimation" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" Margin="0,2,0,0"/>
+                                    <TextBlock Text="Computes quantum fidelity matrices for classical estimators." Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" Margin="0,10,0,0" TextWrapping="Wrap"/>
+                                </StackPanel>
+                            </Grid>
+                        </Border>
+                    </Grid>
+
+                </StackPanel>
+            </ScrollViewer>
+
+            <!-- FOOTER CONTAINER -->
+            <Border Grid.Row="1" Background="#FFFFFF" BorderBrush="#E5E9F2" BorderThickness="0,1,0,0">
+                <Grid Margin="40,0,60,0">
+                    <TextBlock Text="Selected Model: QSVM" Foreground="{StaticResource TextBrush}" FontSize="11" FontWeight="SemiBold" VerticalAlignment="Center"/>
+                    <Button x:Name="ContinueButton" Content="Configure Model  →" Style="{StaticResource PrimaryButtonStyle}" HorizontalAlignment="Right" VerticalAlignment="Center" Click="ContinueButton_Click"/>
+                </Grid>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>

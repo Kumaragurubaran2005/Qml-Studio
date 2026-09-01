@@ -1,0 +1,307 @@
+<Page x:Class="QML_Studio.pages.DataUploadPage"
+      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+      mc:Ignorable="d"
+      Background="#F8F9FD">
+
+    <Page.Resources>
+        <!-- COLORS -->
+        <SolidColorBrush x:Key="PrimaryBrush" Color="#148DF5"/>
+        <SolidColorBrush x:Key="PurpleBrush" Color="#6547FF"/>
+        <SolidColorBrush x:Key="TextBrush" Color="#111729"/>
+        <SolidColorBrush x:Key="SecondaryTextBrush" Color="#71809F"/>
+        <SolidColorBrush x:Key="BorderBrushLight" Color="#DDE3F0"/>
+        <SolidColorBrush x:Key="UploadBackgroundBrush" Color="#F6F7FC"/>
+        <SolidColorBrush x:Key="WhiteBrush" Color="#FFFFFF"/>
+        <SolidColorBrush x:Key="SuccessBrush" Color="#0DB979"/>
+
+        <!-- BUTTON STYLE -->
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#070D1D"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="18,8"/>
+            <Setter Property="FontSize" Value="12"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <Style x:Key="CleanButtonStyle" TargetType="Button">
+            <Setter Property="Background" Value="#6547FF"/>
+            <Setter Property="Foreground" Value="White"/>
+            <Setter Property="BorderThickness" Value="0"/>
+            <Setter Property="Padding" Value="16,8"/>
+            <Setter Property="FontSize" Value="11"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="Button">
+                        <Border Background="{TemplateBinding Background}" CornerRadius="6">
+                            <ContentPresenter HorizontalAlignment="Center" VerticalAlignment="Center" Margin="{TemplateBinding Padding}"/>
+                        </Border>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+
+        <!-- CARD STYLE -->
+        <Style x:Key="MetricCardStyle" TargetType="Border">
+            <Setter Property="Background" Value="White"/>
+            <Setter Property="BorderBrush" Value="#DEE4F0"/>
+            <Setter Property="BorderThickness" Value="1"/>
+            <Setter Property="CornerRadius" Value="10"/>
+            <Setter Property="Padding" Value="16,14"/>
+        </Style>
+    </Page.Resources>
+
+    <Grid x:Name="MainContent" Background="#F9FAFE">
+        <Grid.RowDefinitions>
+            <!-- Header -->
+            <RowDefinition Height="90"/>
+            <!-- Content -->
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <!-- HEADER -->
+        <Border x:Name="Header" Grid.Row="0" Background="#FFFFFF" BorderBrush="#E5E9F2" BorderThickness="0,0,0,1">
+            <Grid Margin="22,15,26,0">
+                <StackPanel>
+                    <TextBlock Text="Data Upload &amp; Exploration" Foreground="#313A51" FontSize="12" FontWeight="SemiBold"/>
+                    <TextBlock Text="Upload your dataset" Foreground="{StaticResource TextBrush}" FontSize="24" FontWeight="Bold" Margin="0,4,0,0"/>
+                    <TextBlock Text="Analyze schema, missing values, data distributions &amp; backend metrics." Foreground="{StaticResource SecondaryTextBrush}" FontSize="12" Margin="0,2,0,0"/>
+                </StackPanel>
+
+                <Border Width="27" Height="27" Background="#F1F2FF" CornerRadius="15" HorizontalAlignment="Right" VerticalAlignment="Top">
+                    <TextBlock Text="U" Foreground="#6652E8" FontSize="10" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+            </Grid>
+        </Border>
+
+        <!-- PAGE CONTENT -->
+        <ScrollViewer Grid.Row="1" VerticalScrollBarVisibility="Auto">
+            <StackPanel Margin="35,20,45,40" Spacing="25">
+
+                <!-- UPLOAD CONTAINER AREA -->
+                <Border x:Name="UploadContainer"
+                        Height="220"
+                        Background="{StaticResource UploadBackgroundBrush}"
+                        BorderBrush="{StaticResource PrimaryBrush}"
+                        BorderThickness="2"
+                        CornerRadius="16"
+                        AllowDrop="True"
+                        DragOver="UploadContainer_DragOver"
+                        Drop="UploadContainer_Drop">
+
+                    <Grid>
+                        <StackPanel HorizontalAlignment="Center" VerticalAlignment="Center" Spacing="8">
+                            <Border Width="40" Height="40" Background="#F0F0FF" CornerRadius="20" HorizontalAlignment="Center">
+                                <TextBlock Text="↑" Foreground="{StaticResource PurpleBrush}" FontSize="24" FontWeight="Bold" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                            </Border>
+
+                            <TextBlock Text="Upload Your Dataset" Foreground="{StaticResource TextBrush}" FontSize="18" FontWeight="Bold" HorizontalAlignment="Center"/>
+                            <TextBlock Text="Drag and drop or select a dataset file to run instant Rust backend analysis." Foreground="{StaticResource SecondaryTextBrush}" FontSize="11" HorizontalAlignment="Center"/>
+
+                            <Border Width="500" Height="70" Background="White" BorderBrush="#6C83FF" BorderThickness="1" CornerRadius="10" Margin="0,6,0,0">
+                                <StackPanel VerticalAlignment="Center" Spacing="3">
+                                    <TextBlock x:Name="DropInstructionText" Text="Drag &amp; Drop CSV / Excel file here" Foreground="#171C2F" FontSize="12" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                                    <TextBlock x:Name="DropOrText" Text="or click below to browse" Foreground="#7885A1" FontSize="10" HorizontalAlignment="Center"/>
+                                    <Button x:Name="BrowseFilesButton" Content="Browse file &amp; Send to Backend" Style="{StaticResource PrimaryButtonStyle}" Click="BrowseFilesButton_Click" HorizontalAlignment="Center" Height="26" FontSize="10"/>
+                                </StackPanel>
+                            </Border>
+
+                            <TextBlock Text="Supported formats: CSV, Excel, JSON" Foreground="#7583A5" FontSize="9" HorizontalAlignment="Center"/>
+                        </StackPanel>
+                    </Grid>
+                </Border>
+
+                <!-- DATA EXPLORATION & METRICS PANEL -->
+                <StackPanel x:Name="ExplorationPanel" Spacing="20">
+                    <Grid>
+                        <TextBlock Text="Dataset Overview &amp; Backend Exploration" Foreground="{StaticResource TextBrush}" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+
+                        <!-- CLEAN DATASET BUTTON -->
+                        <Button x:Name="CleanDataButton"
+                                Content="⚡ Clean Data &amp; Encode Features (Python + Rust)"
+                                Style="{StaticResource CleanButtonStyle}"
+                                HorizontalAlignment="Right"
+                                Click="CleanDataButton_Click"/>
+                    </Grid>
+
+                    <!-- CLEANING SUMMARY NOTIFICATION -->
+                    <Border x:Name="CleanSummaryCard" Visibility="Collapsed" Background="#F0FAF5" BorderBrush="#0DB979" BorderThickness="1" CornerRadius="8" Padding="15">
+                        <StackPanel Spacing="4">
+                            <TextBlock Text="✓ Dataset Preprocessing Complete" Foreground="#0DB979" FontSize="12" FontWeight="Bold"/>
+                            <TextBlock x:Name="CleanSummaryDetails" Text="Imputed missing values, standardized numeric features, removed low variance columns &amp; label encoded categoricals." Foreground="#313A51" FontSize="10"/>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- METRIC CARDS GRID -->
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                            <ColumnDefinition Width="*"/>
+                        </Grid.ColumnDefinitions>
+
+                        <!-- Card 1: Rows -->
+                        <Border Grid.Column="0" Style="{StaticResource MetricCardStyle}" Margin="0,0,10,0">
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="TOTAL ROWS" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="TotalRowsValue" Text="--" Foreground="{StaticResource TextBrush}" FontSize="20" FontWeight="Bold"/>
+                                <TextBlock Text="Parsed by Rust engine" Foreground="{StaticResource SuccessBrush}" FontSize="9"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Card 2: Columns -->
+                        <Border Grid.Column="1" Style="{StaticResource MetricCardStyle}" Margin="0,0,10,0">
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="TOTAL FEATURES" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="TotalColsValue" Text="--" Foreground="{StaticResource TextBrush}" FontSize="20" FontWeight="Bold"/>
+                                <TextBlock x:Name="ColsBreakdownText" Text="0 Numeric • 0 Categorical" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Card 3: Null Values -->
+                        <Border Grid.Column="2" Style="{StaticResource MetricCardStyle}" Margin="0,0,10,0">
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="NULL / MISSING VALUES" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="TotalNullsValue" Text="--" Foreground="{StaticResource TextBrush}" FontSize="20" FontWeight="Bold"/>
+                                <TextBlock x:Name="NullsRatioText" Text="Missing data check complete" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9"/>
+                            </StackPanel>
+                        </Border>
+
+                        <!-- Card 4: Data Health -->
+                        <Border Grid.Column="3" Style="{StaticResource MetricCardStyle}">
+                            <StackPanel Spacing="4">
+                                <TextBlock Text="DATA QUALITY SCORE" Foreground="{StaticResource SecondaryTextBrush}" FontSize="9" FontWeight="SemiBold"/>
+                                <TextBlock x:Name="DataHealthValue" Text="--" Foreground="{StaticResource PurpleBrush}" FontSize="20" FontWeight="Bold"/>
+                                <TextBlock Text="Ready for Quantum Training" Foreground="{StaticResource SuccessBrush}" FontSize="9"/>
+                            </StackPanel>
+                        </Border>
+                    </Grid>
+
+                    <!-- GRAPH & VISUAL DISTRIBUTION -->
+                    <Border Background="White" BorderBrush="#DEE4F0" BorderThickness="1" CornerRadius="10" Padding="20">
+                        <StackPanel Spacing="12">
+                            <Grid>
+                                <TextBlock Text="Feature Health &amp; Null Distribution Graph" Foreground="{StaticResource TextBrush}" FontSize="13" FontWeight="Bold"/>
+                                <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="10">
+                                    <TextBlock x:Name="BackendStatusBadge" Text="Awaiting Dataset..." Foreground="{StaticResource SecondaryTextBrush}" FontSize="10" VerticalAlignment="Center"/>
+                                    <Button x:Name="GraphVisualizeButton" Content="View Full Visualizations ◫" Style="{StaticResource CleanButtonStyle}" Height="24" FontSize="9" Click="VisualizeDataButton_Click"/>
+                                </StackPanel>
+                            </Grid>
+
+                            <!-- GRAPH VISUAL BARS -->
+                            <StackPanel Spacing="8" Margin="0,5,0,0">
+                                <TextBlock Text="Feature Completeness &amp; Missing Data Profile" Foreground="{StaticResource SecondaryTextBrush}" FontSize="10"/>
+                                <Grid Height="20" Background="#F0F2F8" CornerRadius="4">
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition x:Name="ValidBarCol" Width="100*"/>
+                                        <ColumnDefinition x:Name="NullBarCol" Width="0*"/>
+                                    </Grid.ColumnDefinitions>
+                                    <Border Grid.Column="0" Background="{StaticResource PrimaryBrush}" CornerRadius="4,0,0,4"/>
+                                    <Border Grid.Column="1" Background="#FF4D4D" CornerRadius="0,4,4,0"/>
+                                </Grid>
+                                <Grid>
+                                    <TextBlock x:Name="ValidBarLabel" Text="Valid Data: 100%" Foreground="{StaticResource PrimaryBrush}" FontSize="9" FontWeight="SemiBold"/>
+                                    <TextBlock x:Name="NullBarLabel" Text="Missing: 0%" Foreground="#FF4D4D" FontSize="9" FontWeight="SemiBold" HorizontalAlignment="Right"/>
+                                </Grid>
+                            </StackPanel>
+                        </StackPanel>
+                    </Border>
+
+                    <!-- COLUMN DESCRIPTION & NULL DETAILS TABLE -->
+                    <Border Background="White" BorderBrush="#DEE4F0" BorderThickness="1" CornerRadius="10" Padding="20">
+                        <StackPanel Spacing="12">
+                            <TextBlock Text="Column Schema &amp; Feature Description" Foreground="{StaticResource TextBrush}" FontSize="13" FontWeight="Bold"/>
+
+                            <ListView x:Name="ColumnListView" Height="240" SelectionMode="None">
+                                <ListView.HeaderTemplate>
+                                    <DataTemplate>
+                                        <Grid Background="#F5F7FA" Padding="10,6" CornerRadius="4" Margin="0,0,0,6">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1.2*"/>
+                                                <ColumnDefinition Width="1.2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="1.2*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="Column Name" FontSize="10" FontWeight="Bold" Foreground="#71809F"/>
+                                            <TextBlock Grid.Column="1" Text="Data Type" FontSize="10" FontWeight="Bold" Foreground="#71809F"/>
+                                            <TextBlock Grid.Column="2" Text="Non-Null Count" FontSize="10" FontWeight="Bold" Foreground="#71809F"/>
+                                            <TextBlock Grid.Column="3" Text="Null %" FontSize="10" FontWeight="Bold" Foreground="#71809F"/>
+                                            <TextBlock Grid.Column="4" Text="Unique Values" FontSize="10" FontWeight="Bold" Foreground="#71809F"/>
+                                            <TextBlock Grid.Column="5" Text="Sample Value" FontSize="10" FontWeight="Bold" Foreground="#71809F"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.HeaderTemplate>
+
+                                <ListView.ItemTemplate>
+                                    <DataTemplate>
+                                        <Grid Padding="10,6">
+                                            <Grid.ColumnDefinitions>
+                                                <ColumnDefinition Width="2*"/>
+                                                <ColumnDefinition Width="1.2*"/>
+                                                <ColumnDefinition Width="1.2*"/>
+                                                <ColumnDefinition Width="1*"/>
+                                                <ColumnDefinition Width="1.2*"/>
+                                                <ColumnDefinition Width="2*"/>
+                                            </Grid.ColumnDefinitions>
+                                            <TextBlock Grid.Column="0" Text="{Binding Name}" FontSize="11" FontWeight="SemiBold" Foreground="#111729"/>
+                                            <TextBlock Grid.Column="1" Text="{Binding DataType}" FontSize="10" Foreground="#6547FF"/>
+                                            <TextBlock Grid.Column="2" Text="{Binding NonNullCount}" FontSize="10" Foreground="#71809F"/>
+                                            <TextBlock Grid.Column="3" Text="{Binding NullPercentage}" FontSize="10" Foreground="#0DB979"/>
+                                            <TextBlock Grid.Column="4" Text="{Binding UniqueCount}" FontSize="10" Foreground="#71809F"/>
+                                            <TextBlock Grid.Column="5" Text="{Binding SampleVal}" FontSize="10" Foreground="#313A51" TextTrimming="CharacterEllipsis"/>
+                                        </Grid>
+                                    </DataTemplate>
+                                </ListView.ItemTemplate>
+                            </ListView>
+                        </StackPanel>
+                    </Border>
+                </StackPanel>
+
+                <!-- BOTTOM ACTION BUTTONS -->
+                <Grid Margin="0,10,0,0">
+                    <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Spacing="12">
+                        <Button x:Name="VisualizeDataButton"
+                                Content="◫ Visualize Data"
+                                Width="160"
+                                Height="40"
+                                Style="{StaticResource CleanButtonStyle}"
+                                Click="VisualizeDataButton_Click"/>
+
+                        <Button x:Name="DevelopModelButton"
+                                Content="Develop Model  →"
+                                Width="170"
+                                Height="40"
+                                Style="{StaticResource PrimaryButtonStyle}"
+                                Click="DevelopModelButton_Click"/>
+                    </StackPanel>
+                </Grid>
+
+            </StackPanel>
+        </ScrollViewer>
+
+        <!-- LOADING OVERLAY ANIMATION -->
+        <Grid x:Name="LoadingOverlay" Visibility="Collapsed" Background="#90000000" Grid.RowSpan="2">
+            <Border Background="White" CornerRadius="14" Padding="30,24" HorizontalAlignment="Center" VerticalAlignment="Center">
+                <StackPanel Spacing="14" HorizontalAlignment="Center">
+                    <ProgressRing x:Name="LoadingRing" IsActive="False" Width="44" Height="44" Foreground="#6547FF"/>
+                    <TextBlock x:Name="LoadingText" Text="Communicating with Rust Backend..." Foreground="#111729" FontSize="13" FontWeight="Bold" HorizontalAlignment="Center"/>
+                    <TextBlock Text="Please wait while data is processed..." Foreground="#71809F" FontSize="10" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </Grid>
+</Page>
